@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Wanted Card Filter",
+  "version": "1.0",
+  "description": "회사명에 특정 단어가 포함된 카드를 제외하는 크롬 익스텐션",
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://www.wanted.co.kr/wdlist*"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
