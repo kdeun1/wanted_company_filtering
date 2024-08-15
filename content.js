@@ -1,13 +1,20 @@
-function filterCards(keywords) {
-  const cards = document.querySelectorAll('[class*="Card_Card__"]');
+function filterCards() {
+  chrome.storage.local.get('wanted_filter_company_name', result => {
+    if (result?.wanted_filter_company_name) {
+      const companyArr = result.wanted_filter_company_name;
+      if (companyArr?.length > 0) {
+        const cards = document.querySelectorAll('[class*="Card_Card__"]');
 
-  cards.forEach(card => {
-    const cardText =
-      card.children[0].children[0].getAttribute('data-company-name');
-    for (let keyword of keywords) {
-      if (cardText.includes(keyword.trim())) {
-        card.style.display = 'none';
-        break;
+        cards.forEach(card => {
+          const cardText =
+            card.children[0].children[0].getAttribute('data-company-name');
+          for (let keyword of companyArr) {
+            if (cardText.includes(keyword.trim())) {
+              card.style.display = 'none';
+              break;
+            }
+          }
+        });
       }
     }
   });
@@ -19,7 +26,7 @@ function saveKeywordsToLocalStorage(keywords) {
   });
 }
 
-function resetCards() {
+function cancelFilterCards() {
   const cards = document.querySelectorAll('[class*="Card_Card__"]');
 
   cards.forEach(card => {
@@ -27,28 +34,58 @@ function resetCards() {
   });
 }
 
-function initKeywordsToLocalStorage() {
-  chrome.storage.local.remove(['wanted_filter_company_name'], () => {
+function clearStorage(key) {
+  let removedKeys = ['wanted_filter_company_name, wanted_filter_check'];
+  if (key) {
+    removedKeys = [key];
+  }
+  chrome.storage.local.remove(removedKeys, () => {
     console.log('Keywords removed to chrome storage');
   });
 }
 
-// 익스텐션에서 메시지를 받았을 때 처리
+function saveCheckToStorage(flag) {
+  chrome.storage.local.set({ wanted_filter_check: flag }, () => {
+    console.log('Checking filter');
+  });
+}
+
+window.addEventListener('popstate', function () {
+  chrome.storage.local.get('wanted_filter_check', result => {
+    if (result?.wanted_filter_check === true) {
+      filterCards();
+    }
+  });
+});
+
+window.onload = function () {
+  chrome.storage.local.get('wanted_filter_check', result => {
+    if (result?.wanted_filter_check === true) {
+      filterCards();
+    }
+  });
+};
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'filter') {
-    resetCards();
+    cancelFilterCards();
     const keywords = request.keyword.split(',');
-    if (keywords) {
-      filterCards(keywords);
+    if (request.keyword) {
       saveKeywordsToLocalStorage(keywords);
+      filterCards();
+    } else {
+      clearStorage('wanted_filter_company_name');
     }
     sendResponse({ status: 'done' });
   } else if (request.action === 'reset') {
-    resetCards();
+    cancelFilterCards();
     sendResponse({ status: 'done' });
   } else if (request.action === 'clear') {
-    resetCards();
-    initKeywordsToLocalStorage();
+    cancelFilterCards();
+    clearStorage();
+    sendResponse({ status: 'done' });
+  } else if (request.action === 'check') {
+    saveCheckToStorage(request.isChecked);
     sendResponse({ status: 'done' });
   }
 });

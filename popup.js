@@ -1,19 +1,25 @@
+const filterButton = document.getElementById('filterButton');
+const resetButton = document.getElementById('resetButton');
+const clearButton = document.getElementById('clearButton');
+const filterCheckbox = document.getElementById('filterCheckbox');
+const keywordTextarea = document.getElementById('keyword');
+
 document.addEventListener('DOMContentLoaded', () => {
   chrome.storage.local.get('wanted_filter_company_name', result => {
     if (result?.wanted_filter_company_name) {
-      document.getElementById('keyword').value =
-        result.wanted_filter_company_name;
+      keywordTextarea.value = result.wanted_filter_company_name;
+    }
+  });
+
+  chrome.storage.local.get('wanted_filter_check', result => {
+    if (result?.wanted_filter_check === true) {
+      filterCheckbox.checked = result.wanted_filter_check;
     }
   });
 });
 
-document.getElementById('filterButton').addEventListener('click', () => {
-  const keyword = document.getElementById('keyword').value;
-  if (!keyword) {
-    return;
-  }
-
-  // 현재 탭에 content script에 메시지 보내기
+filterButton.addEventListener('click', () => {
+  const keyword = keywordTextarea.value;
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
     chrome.tabs.sendMessage(
       tabs[0].id,
@@ -25,8 +31,7 @@ document.getElementById('filterButton').addEventListener('click', () => {
   });
 });
 
-document.getElementById('resetButton').addEventListener('click', () => {
-  // 현재 탭에 content script에 reset 메시지 보내기
+resetButton.addEventListener('click', () => {
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
     chrome.tabs.sendMessage(tabs[0].id, { action: 'reset' }, response => {
       console.log(response?.status);
@@ -34,11 +39,23 @@ document.getElementById('resetButton').addEventListener('click', () => {
   });
 });
 
-document.getElementById('clearButton').addEventListener('click', () => {
-  // 현재 탭에 content script에 reset 메시지 보내기
+clearButton.addEventListener('click', () => {
   chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
     chrome.tabs.sendMessage(tabs[0].id, { action: 'clear' }, response => {
       console.log(response?.status);
     });
+  });
+});
+
+filterCheckbox.addEventListener('change', () => {
+  const isChecked = filterCheckbox.checked;
+  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+    chrome.tabs.sendMessage(
+      tabs[0].id,
+      { action: 'check', isChecked: isChecked },
+      response => {
+        console.log(response?.status);
+      }
+    );
   });
 });
