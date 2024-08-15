@@ -36,6 +36,7 @@ function initKeywordsToLocalStorage() {
 // 익스텐션에서 메시지를 받았을 때 처리
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'filter') {
+    resetCards();
     const keywords = request.keyword.split(',');
     if (keywords) {
       filterCards(keywords);
