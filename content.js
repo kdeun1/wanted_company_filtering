@@ -1,5 +1,5 @@
 function filterCards(keywords) {
-  const cards = document.querySelectorAll('.Card_Card__WdaEk');
+  const cards = document.querySelectorAll('[class*="Card_Card__"]');
 
   cards.forEach(card => {
     const cardText =
@@ -13,11 +13,23 @@ function filterCards(keywords) {
   });
 }
 
+function saveKeywordsToLocalStorage(keywords) {
+  chrome.storage.local.set({ wanted_filter_company_name: keywords }, () => {
+    console.log('Keywords saved to local storage:', keywords);
+  });
+}
+
 function resetCards() {
-  const cards = document.querySelectorAll('.Card_Card__WdaEk');
+  const cards = document.querySelectorAll('[class*="Card_Card__"]');
 
   cards.forEach(card => {
     card.style.display = '';
+  });
+}
+
+function initKeywordsToLocalStorage() {
+  chrome.storage.local.remove(['wanted_filter_company_name'], () => {
+    console.log('Keywords removed to chrome storage');
   });
 }
 
@@ -27,10 +39,15 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const keywords = request.keyword.split(',');
     if (keywords) {
       filterCards(keywords);
+      saveKeywordsToLocalStorage(keywords);
     }
     sendResponse({ status: 'done' });
   } else if (request.action === 'reset') {
     resetCards();
+    sendResponse({ status: 'done' });
+  } else if (request.action === 'clear') {
+    resetCards();
+    initKeywordsToLocalStorage();
     sendResponse({ status: 'done' });
   }
 });

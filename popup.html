@@ -2,32 +2,24 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <style>
-      body {
-        width: 200px;
-        padding: 10px;
-      }
-      textarea {
-        width: 100%;
-        height: 80px;
-        padding: 5px;
-      }
-      button {
-        width: 100%;
-        padding: 5px;
-        margin-top: 10px;
-      }
-    </style>
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <textarea
-      id="keyword"
-      placeholder="회사명 제외 단어 입력 (쉼표로 구분)"
-    ></textarea>
-    <button id="filterButton">필터 적용</button>
-    <button id="resetButton" style="background-color: #f44336; color: white">
-      Reset
-    </button>
+    <main>
+      <section class="labelSection">
+        <p>회사명</p>
+        <textarea
+          id="keyword"
+          placeholder="회사명 제외 단어 입력 (쉼표로 구분)"
+        ></textarea>
+      </section>
+    </main>
+
+    <footer>
+      <button id="filterButton">필터 적용</button>
+      <button id="resetButton">필터 해제</button>
+      <button id="clearButton">스토리지 클리어</button>
+    </footer>
 
     <script src="popup.js"></script>
   </body>

@@ -1,11 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Wanted Card Filter",
+  "name": "아이원티드댓컴퍼니",
   "version": "1.0",
-  "description": "회사명에 특정 단어가 포함된 카드를 제외하는 크롬 익스텐션",
+  "description": "원티드 채용공고의 여러 회사를 원했고 지원했지만 아쉽게도 다른 회사를 검색하는 경우 사용하는 도구",
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "storage"
   ],
   "content_scripts": [
     {

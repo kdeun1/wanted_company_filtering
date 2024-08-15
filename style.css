@@ -1,0 +1,35 @@
+body {
+  width: 200px;
+  padding: 10px;
+}
+main {
+  display: flex;
+  width: 100%;
+}
+textarea {
+  height: 80px;
+  padding: 5px;
+}
+button {
+  width: 100%;
+  padding: 5px;
+  margin-top: 10px;
+}
+p {
+  margin: 0;
+  padding-bottom: 5px;
+}
+
+.labelSection {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+#filterButton {
+  background-color: aquamarine;
+}
+#resetButton {
+  background-color: #f44336;
+  color: white;
+}
