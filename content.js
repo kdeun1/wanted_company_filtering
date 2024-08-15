@@ -6,10 +6,16 @@ function filterCards() {
         const cards = document.querySelectorAll('[class*="Card_Card__"]');
 
         cards.forEach(card => {
-          const cardText =
+          const companyName =
             card.children[0].children[0].getAttribute('data-company-name');
+          const positionName =
+            card.children[0].children[0].getAttribute('data-position-name');
           for (let keyword of companyArr) {
-            if (cardText.includes(keyword.trim())) {
+            const trimedKeyword = keyword.trim();
+            if (
+              companyName.includes(trimedKeyword) ||
+              positionName.includes(trimedKeyword)
+            ) {
               card.style.display = 'none';
               break;
             }
