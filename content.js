@@ -51,11 +51,13 @@ function saveCheckToStorage(flag) {
 }
 
 window.addEventListener('popstate', function () {
-  chrome.storage.local.get('wanted_filter_check', result => {
-    if (result?.wanted_filter_check === true) {
-      filterCards();
-    }
-  });
+  setTimeout(() => {
+    chrome.storage.local.get('wanted_filter_check', result => {
+      if (result?.wanted_filter_check === true) {
+        filterCards();
+      }
+    });
+  }, 500);
 });
 
 window.onload = function () {
