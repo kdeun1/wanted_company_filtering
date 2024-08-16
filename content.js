@@ -77,7 +77,7 @@ window.onload = function () {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === 'filter') {
     cancelFilterCards();
-    const keywords = request.keyword.split(',');
+    const keywords = request.keyword.split(',').filter(v => v);
     if (request.keyword) {
       saveKeywordsToLocalStorage(keywords);
       filterCards();
