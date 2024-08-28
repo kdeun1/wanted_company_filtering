@@ -26,6 +26,30 @@ function filterCards() {
   });
 }
 
+const observer = new MutationObserver(mutationList => {
+  chrome.storage.local.get('wanted_filter_check', result => {
+    if (result?.wanted_filter_check === true) {
+      for (const mutation of mutationList) {
+        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+          filterCards();
+        }
+      }
+    }
+  });
+});
+
+function startObserver() {
+  const jobListUl = document.querySelectorAll('[class*="List_List__"]')[0];
+  observer.observe(jobListUl, {
+    subtree: true,
+    childList: true,
+  });
+}
+
+function endObserver() {
+  observer.disconnect();
+}
+
 function saveKeywordsToLocalStorage(keywords) {
   chrome.storage.local.set({ wanted_filter_company_name: keywords }, () => {
     console.log('Keywords saved to local storage:', keywords);
@@ -60,6 +84,7 @@ window.addEventListener('popstate', function () {
   setTimeout(() => {
     chrome.storage.local.get('wanted_filter_check', result => {
       if (result?.wanted_filter_check === true) {
+        startObserver();
         filterCards();
       }
     });
@@ -69,6 +94,7 @@ window.addEventListener('popstate', function () {
 window.onload = function () {
   chrome.storage.local.get('wanted_filter_check', result => {
     if (result?.wanted_filter_check === true) {
+      startObserver();
       filterCards();
     }
   });
@@ -80,12 +106,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const keywords = request.keyword.split(',').filter(v => v);
     if (request.keyword) {
       saveKeywordsToLocalStorage(keywords);
+      startObserver();
       filterCards();
     } else {
       clearStorage('wanted_filter_company_name');
     }
     sendResponse({ status: 'done' });
   } else if (request.action === 'reset') {
+    endObserver();
     cancelFilterCards();
     sendResponse({ status: 'done' });
   } else if (request.action === 'clear') {
@@ -94,6 +122,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     sendResponse({ status: 'done' });
   } else if (request.action === 'check') {
     saveCheckToStorage(request.isChecked);
+    if (request.isChecked) {
+      startObserver();
+      filterCards();
+    } else {
+      endObserver();
+      cancelFilterCards();
+    }
     sendResponse({ status: 'done' });
   }
 });
