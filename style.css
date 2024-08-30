@@ -26,10 +26,7 @@ p {
   flex-direction: column;
 }
 
-#filterButton {
-  background-color: aquamarine;
-}
-#resetButton {
-  background-color: #f44336;
-  color: white;
+#clearButton {
+  border: 1px solid;
+  background-color: rgb(126, 221, 250);
 }

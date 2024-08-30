@@ -7,22 +7,22 @@
   <body>
     <main>
       <section class="labelSection">
-        <p>회사명</p>
+        <p>제외 단어</p>
         <textarea
           id="keyword"
-          placeholder="회사명 제외 단어 입력 (쉼표로 구분)"
+          placeholder="회사명, 직무 제외 단어 입력"
         ></textarea>
       </section>
     </main>
 
     <footer>
       <div>
-        <label for="filterCheckbox"
-          ><input type="checkbox" id="filterCheckbox" />항상 적용
+        <label for="wantedFilterCheckbox"
+          ><input type="checkbox" id="wantedFilterCheckbox" />원티드 필터링
         </label>
       </div>
-      <button id="filterButton">필터 적용</button>
-      <button id="resetButton">필터 해제</button>
+      <br />
+      <div>500ms의 딜레이가 존재합니다.</div>
       <button id="clearButton">스토리지 클리어</button>
     </footer>
 
