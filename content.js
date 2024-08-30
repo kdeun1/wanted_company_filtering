@@ -80,7 +80,7 @@ window.onload = () => {
   });
 
   wantedObserver = new MutationObserver(
-    debounce(mutationList => {
+    debounce(() => {
       chrome.storage.local.get('wanted_check', ({ wanted_check }) => {
         if (wanted_check) {
           filterCards();
