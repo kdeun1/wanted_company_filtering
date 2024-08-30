@@ -10,7 +10,7 @@
 
 1. Chrome Extension > 개발자 모드 > '압축해제된 확장 프로그램을 로드합니다.' 버튼 클릭.
 
-   ![alt text](/assets/extension_load.png)
+   ![alt text](/assets/add_chrome_extensions.png)
 
    로드 경로를 다운받은 프로젝트의 폴더로 지정합니다.
 
@@ -18,11 +18,11 @@
 
 2. 원티드 > 채용공고 메뉴 들어가서 해당 익스텐션 사용하여 회사명 필터링걸기.
 
-   ![alt text](/assets/before.png)
+   ![alt text](/assets/wanted_before.png)
 
    크롬 익스텐션 열고 검색어 입력하기 (콤마 및 개행문자로 구분)
 
-   ![alt text](/assets/after.png)
+   ![alt text](/assets/wanted_after.png)
 
    제외 단어 입력 후 필터링 하기
 
