@@ -8,11 +8,13 @@
    git clone https://github.com/kdeun1/wanted_company_filtering.git
    ```
 
-1. Chrome Extension > 개발자 모드 > 압축해제된 확장 프로그램을 로드합니다.
+1. Chrome Extension > 개발자 모드 > '압축해제된 확장 프로그램을 로드합니다.' 버튼 클릭.
+
+   ![alt text](/assets/extension_load.png)
 
    로드 경로를 다운받은 프로젝트의 폴더로 지정합니다.
+
    다음과 같이 리스트가 나타납니다.
-   ![alt text](/assets/extension_load.png)
 
 2. 원티드 > 채용공고 메뉴 들어가서 해당 익스텐션 사용하여 회사명 필터링걸기.
 
